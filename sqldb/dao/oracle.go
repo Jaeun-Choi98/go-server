@@ -2,7 +2,6 @@ package dao
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"root/model"
 
@@ -27,8 +26,8 @@ func NewOracleDB(dbCon string) DaoTestInterfcae {
 
 // ORA-00911 err -> query에 세미콜론이나 백틱이 있다면 발생.
 func (o *OracleDB) InsertUser(user model.User) error {
-	query := fmt.Sprintf(`insert into users values(user_id.nextval, '%s', '%d')`, user.UserName, user.Age)
-	_, err := o.db.Exec(query)
+	query := `insert into users values(user_id.nextval, :1, :2)`
+	_, err := o.db.Exec(query, user.UserName, user.Age)
 	if err != nil {
 		log.Println(err)
 		return err
